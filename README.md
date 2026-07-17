@@ -1,8 +1,7 @@
 # Astro + Tailwind starter (markdown blog + SEO, blank slate)
 
 A minimal static starter with a full **markdown blog engine, Google Consent Mode v2, datalayer events and SEO/metadata
-layer**, and nothing else — no widgets, no dark mode, no image CDN, and no
-pre-built UI. Everything reads from plain TypeScript config
+layer**. Everything reads from plain TypeScript config
 (`src/site.config.ts` + `src/config.ts`).
 
 Built and verified against **Astro 7.0 + Tailwind 4.3**, on Vite 8 (Node ≥ 22.12).
@@ -79,12 +78,6 @@ are included. Links live in `src/navigation.ts`; the logo is a placeholder in
 
 **Plumbing:** `@astrojs/sitemap`, MDX support, the `~` → `src` alias, and the
 Tailwind v4 setup (`@tailwindcss/vite` + typography plugin for `prose`).
-
-### Intentionally not included (add later if you want them)
-
-Functionality that wasn't copied over from the AstroWind theme:
-Dark mode / theme toggle, image-CDN routing, Partytown, icon/compression
-integrations, and pre-built UI widgets — the starter ships a blank slate.
 
 ### Robots defaults
 
