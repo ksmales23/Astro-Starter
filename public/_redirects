@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects — one rule per line:
+#   /source-path  /destination-path  status
+# Examples (uncomment/adapt as needed):
+#   /old-page  /new-page  301
+#   https://www.example.com/*  https://example.com/:splat  301

@@ -1,0 +1,18 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { getBlogPermalink } from '~/utils/permalinks';
+---
+
+<Layout metadata={{ title: 'Home' }}>
+  <div class="mx-auto max-w-3xl px-4 py-20">
+    <h1 class="text-5xl font-bold">Fresh Astro starter</h1>
+    <p class="mt-4 text-lg text-gray-600">Blank slate with the blog data layer and SEO wired up.</p>
+    <a class="mt-6 inline-block underline" href={getBlogPermalink()}>Go to the blog →</a>
+
+    <!-- Alpine.js sanity check — delete when you build your own components. -->
+    <div x-data="{ open: false }" class="mt-8">
+      <button @click="open = !open" class="rounded border px-3 py-1 text-sm">Toggle Alpine</button>
+      <p x-show="open" x-cloak class="mt-2 text-gray-600">Alpine.js is working.</p>
+    </div>
+  </div>
+</Layout>

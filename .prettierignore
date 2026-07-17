@@ -1,0 +1,14 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+public/
+
+# prettier-plugin-astro cannot parse `is:inline` scripts nested inside
+# conditional expressions ({enabled && (<script>…)}). These compile fine;
+# they just can't be formatted. Keep them ignored.
+src/components/common/AnalyticsPageview.astro
+src/components/common/ConsentBanner.astro
+src/components/common/ConsentInit.astro
+src/components/common/GoogleTagManagerNoscript.astro
+src/components/common/GoogleTagManager.astro

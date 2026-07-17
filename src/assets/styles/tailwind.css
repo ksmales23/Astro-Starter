@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+/* Typography plugin powers `prose` classes used to style rendered blog markdown. */
+@plugin '@tailwindcss/typography';
+
+/* Add your own design tokens (@theme), fonts and base styles below.
+   No theming system or dark mode is included — this is a blank slate. */
+
+/* Alpine.js: hide x-cloak elements until Alpine initialises. */
+[x-cloak] {
+  display: none !important;
+}

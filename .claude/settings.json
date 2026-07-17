@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run check)",
+      "Bash(npm run fmt)",
+      "Bash(npm run fmt:check)",
+      "Bash(npx astro check:*)",
+      "Bash(npx prettier:*)"
+    ],
+    "deny": ["Read(.env)", "Read(.env.*)", "Read(./.env)", "Read(./.env.*)"]
+  }
+}

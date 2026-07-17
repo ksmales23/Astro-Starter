@@ -1,0 +1,95 @@
+---
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import { getStaticPathsBlogPost, blogPostRobots, getRelatedPosts, isRelatedPostsEnabled } from '~/utils/blog';
+import { getCanonical, getPermalink } from '~/utils/permalinks';
+import { getFormattedDate } from '~/utils/utils';
+import { SITE } from '~/config';
+
+export const getStaticPaths = (async () => {
+  return await getStaticPathsBlogPost();
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { post } = Astro.props as Props;
+const { Content } = post;
+
+const related = isRelatedPostsEnabled ? await getRelatedPosts(post, 4) : [];
+
+// BlogPosting JSON-LD. `image` is included only when the frontmatter image is
+// already an absolute URL; local `~/assets` images are omitted here (the OG
+// image pipeline in Metadata.astro still handles those for social cards).
+const postUrl = String(getCanonical(getPermalink(post.permalink, 'post')));
+const postSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  ...(post.excerpt ? { description: post.excerpt } : {}),
+  datePublished: post.publishDate.toISOString(),
+  ...(post.updateDate ? { dateModified: post.updateDate.toISOString() } : {}),
+  ...(post.author ? { author: { '@type': 'Person', name: post.author } } : {}),
+  ...(typeof post.image === 'string' && post.image.startsWith('http') ? { image: post.image } : {}),
+  publisher: { '@id': `${SITE.site}/#organization` },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+};
+
+const metadata = {
+  title: post.title,
+  description: post.excerpt,
+  robots: { index: blogPostRobots?.index, follow: blogPostRobots?.follow },
+  openGraph: { type: 'article', ...(post.image ? { images: [{ url: post.image as string }] } : {}) },
+  ...post.metadata,
+};
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(postSchema)} is:inline />
+  <!-- ===== Replace everything below with your own post design ===== -->
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <header class="mb-8">
+      <p class="text-sm text-gray-500">
+        {getFormattedDate(post.publishDate)}
+        {post.readingTime ? ` · ${post.readingTime} min read` : ''}
+        {post.author ? ` · ${post.author}` : ''}
+      </p>
+      <h1 class="mt-2 text-4xl font-bold">{post.title}</h1>
+      {post.excerpt && <p class="mt-3 text-lg text-gray-600">{post.excerpt}</p>}
+    </header>
+
+    <div class="prose max-w-none">
+      {Content && <Content />}
+    </div>
+
+    {
+      post.tags && post.tags.length > 0 && (
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <li>
+              <a class="text-sm underline" href={getPermalink(tag.slug, 'tag')}>
+                #{tag.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      related.length > 0 && (
+        <section class="mt-12 border-t pt-6">
+          <h2 class="text-xl font-semibold">Related posts</h2>
+          <ul class="mt-4 space-y-2">
+            {related.map((r) => (
+              <li>
+                <a class="underline" href={getPermalink(r.permalink, 'post')}>
+                  {r.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </article>
+  <!-- ===== End replaceable region ===== -->
+</Layout>

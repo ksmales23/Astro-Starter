@@ -1,0 +1,26 @@
+---
+import { SITE } from '~/config';
+
+// Site-wide JSON-LD: WebSite + Organization. Post pages add BlogPosting
+// themselves (see src/pages/[...blog]/index.astro).
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.site}/#website`,
+      name: SITE.name,
+      url: SITE.site,
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.site}/#organization`,
+      name: SITE.name,
+      url: SITE.site,
+      logo: new URL('/icon-512.png', SITE.site).toString(),
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />

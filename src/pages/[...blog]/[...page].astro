@@ -1,0 +1,62 @@
+---
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import { getStaticPathsBlogList, blogListRobots } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+import { getFormattedDate } from '~/utils/utils';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  return await getStaticPathsBlogList({ paginate });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { page } = Astro.props as Props;
+const posts = page.data;
+
+const metadata = {
+  title: `Blog${page.currentPage > 1 ? ` — Page ${page.currentPage}` : ''}`,
+  robots: { index: blogListRobots?.index, follow: blogListRobots?.follow },
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- ===== Replace with your own blog index design ===== -->
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-4xl font-bold">Blog</h1>
+    <ul class="mt-8 space-y-6">
+      {
+        posts.map((post) => (
+          <li>
+            <a class="text-2xl font-semibold underline" href={getPermalink(post.permalink, 'post')}>
+              {post.title}
+            </a>
+            <p class="text-sm text-gray-500">{getFormattedDate(post.publishDate)}</p>
+            {post.excerpt && <p class="mt-1 text-gray-600">{post.excerpt}</p>}
+          </li>
+        ))
+      }
+    </ul>
+
+    <nav class="mt-10 flex justify-between">
+      {
+        page.url.prev ? (
+          <a class="underline" href={page.url.prev}>
+            ← Newer
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        page.url.next ? (
+          <a class="underline" href={page.url.next}>
+            Older →
+          </a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </section>
+  <!-- ===== End replaceable region ===== -->
+</Layout>

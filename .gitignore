@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Astro generated types
+.astro/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables (keep the example committed)
+.env
+.env.*
+!.env.example
+
+# Cloudflare / Wrangler local artifacts (.dev.vars holds local secrets — never commit)
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Editor folders — extensions.json is committed so collaborators get the
+# recommended Astro/Tailwind/Prettier/Claude Code extensions.
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code local (per-machine) settings — settings.json stays committed
+.claude/settings.local.json
+
+# OS files
+.DS_Store
+Thumbs.db

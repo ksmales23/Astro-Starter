@@ -1,0 +1,19 @@
+---
+import { ANALYTICS } from '~/config';
+const GTM_ID = ANALYTICS.gtmId;
+const enabled = import.meta.env.PROD && Boolean(GTM_ID);
+---
+
+{
+  enabled && (
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"
+      />
+    </noscript>
+  )
+}

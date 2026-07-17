@@ -1,0 +1,32 @@
+---
+// Sets Google Consent Mode v2 defaults to "denied" BEFORE any tag loads.
+// Reads a stored choice so returning visitors keep their decision.
+// This runs on every page (inline, before GTM) — order matters.
+// Only rendered when GTM is configured at all; without a GTM ID there is
+// nothing to consent to and the script would be dead weight.
+import { ANALYTICS } from '~/config';
+const enabled = Boolean(ANALYTICS.gtmId);
+---
+{enabled && (
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+
+  // Default everything to denied (required for UK/EEA before consent).
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500,
+  });
+
+  // Re-apply a previously stored consent choice on load.
+  try {
+    var stored = localStorage.getItem('consent-mode');
+    if (stored) gtag('consent', 'update', JSON.parse(stored));
+  } catch (e) {}
+</script>
+)}

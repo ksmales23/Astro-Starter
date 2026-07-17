@@ -1,0 +1,16 @@
+---
+import { ANALYTICS } from '~/config';
+const enabled = import.meta.env.PROD && Boolean(ANALYTICS.gtmId);
+---
+{enabled && (
+  <script is:inline>
+    document.addEventListener('astro:page-load', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'astro_page_view',
+        page_path: location.pathname + location.search,
+        page_title: document.title,
+      });
+    });
+  </script>
+)}

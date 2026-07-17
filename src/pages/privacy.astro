@@ -1,0 +1,30 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { ANALYTICS } from '~/config';
+---
+
+<Layout metadata={{ title: 'Privacy', description: 'Privacy and cookie policy.' }}>
+  <div class="mx-auto prose max-w-3xl px-4 py-16">
+    <h1>Privacy &amp; cookies</h1>
+    <p>Replace this with your real privacy/cookie policy. The consent banner links here.</p>
+
+    {
+      ANALYTICS.consentRequired && (
+        <section>
+          <h2>Manage cookie preferences</h2>
+          <p>
+            You can change or withdraw your analytics consent at any time. Clicking the button below clears your stored
+            choice and shows the consent banner again (consent defaults back to denied until you choose).
+          </p>
+          <button
+            type="button"
+            class="not-prose rounded border border-gray-300 px-4 py-2 text-sm"
+            onclick="try { localStorage.removeItem('consent-mode'); } catch (e) {} location.reload();"
+          >
+            Reset cookie preferences
+          </button>
+        </section>
+      )
+    }
+  </div>
+</Layout>
